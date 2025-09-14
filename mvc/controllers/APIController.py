@@ -21,10 +21,29 @@ class APIController:
     
     @classmethod
     def getHostMemory(self,hostname):
-        cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"free -h")        
+        cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"free -h|tr -s ' '| sed -e 's/ /,/g' -e '1d'")        
         
         ResCode=json.loads(cmdResponse)['code']
-        print(json.loads(cmdResponse)['data'])
+        if ResCode == 200:
+            RespData=json.loads(cmdResponse)['data']
+            RespDataLines = RespData.split('\n')
+            MemLine = RespDataLines[0].split(',')
+            SwapLine = RespDataLines[1].split(',')
+            RespDataDict = {
+                "code": 200,
+                "Memory": {
+                    "Total": f"{MemLine[1]}",
+                    "Used": f"{MemLine[2]}",
+                    "Free": f"{MemLine[6]}"
+                },
+                "Swap": {
+                    "Total": f"{SwapLine[1]}",
+                    "Used": f"{SwapLine[2]}",
+                    "Free": f"{SwapLine[3]}"
+                }
+            }
+            cmdResponse=json.dumps(RespDataDict)
+            
         return  cmdResponse,ResCode
 
 
