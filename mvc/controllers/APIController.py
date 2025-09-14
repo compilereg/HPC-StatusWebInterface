@@ -3,6 +3,7 @@ from mvc.models import responseModel as rm
 from mvc.models import hostMemoryModel as hm
 from mvc.models import hostLoadAvgModel as hla
 from mvc.models import hostProcesses as hp
+from mvc.models import clusterInfo as ci
 import json
 
 
@@ -59,9 +60,13 @@ class APIController:
     
     
     @classmethod
-    def getClusterParition(self,hostname):
-        cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"sinfo -s")        
+    def getClusterParitions(self,hostname):
+        cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"sinfo -s | cut -f1 -d' '  | sed -e '1d' -e ':a;N;$!ba;s/\\n/,/g'")        
         
         ResCode=json.loads(cmdResponse)['code']
-        print(json.loads(cmdResponse)['data'])
+        if ResCode == 200:
+            ClusterInfo = ci.ClusterInfo()
+            cmdResponse = ClusterInfo.ListAllPartitions(json.loads(cmdResponse)['data'])
+
+        
         return  cmdResponse,ResCode
