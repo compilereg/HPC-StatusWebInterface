@@ -1,6 +1,7 @@
 from mvc.operations import hostOperations as ho
 from mvc.models import responseModel as rm
 from mvc.models import hostMemoryModel as hm
+from mvc.models import hostLoadAvgModel as hla
 import json
 
 
@@ -35,10 +36,13 @@ class APIController:
 
     @classmethod
     def getHostLoadAverage(self,hostname):
-        cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"uptime")        
+        cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"cat /proc/loadavg | awk ' { print $1\",\"$2\",\"$3\",\"$4 } '")        
         
         ResCode=json.loads(cmdResponse)['code']
-        print(json.loads(cmdResponse)['data'])
+        if ResCode == 200:
+            HostLoadAvg=hla.hostLoadAvgModel()
+            cmdResponse = HostLoadAvg.GetHostLoadAvg(json.loads(cmdResponse)['data'])
+        
         return  cmdResponse,ResCode
     
     @classmethod
