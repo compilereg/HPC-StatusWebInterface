@@ -2,6 +2,7 @@ from mvc.operations import hostOperations as ho
 from mvc.models import responseModel as rm
 from mvc.models import hostMemoryModel as hm
 from mvc.models import hostLoadAvgModel as hla
+from mvc.models import hostProcesses as hp
 import json
 
 
@@ -50,7 +51,10 @@ class APIController:
         cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"ps -ef|wc -l")        
         
         ResCode=json.loads(cmdResponse)['code']
-        print(json.loads(cmdResponse)['data'])
+        if ResCode == 200:
+            HostProcessesCount = hp.hostProcesses()
+            cmdResponse = HostProcessesCount.GetHostProcessCount(json.loads(cmdResponse)['data'])
+
         return  cmdResponse,ResCode
     
     
