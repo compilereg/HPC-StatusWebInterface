@@ -1,16 +1,21 @@
 from mvc.controllers import settingsController as sc
 from mvc.models import responseModel as rm
 import paramiko
+from ping3 import ping
 
 class HostOperations:
     
     #Return true if host is live, false otherwise. The @classmethod allows to call the class by its name
     @classmethod
     def getHostState(self,hostname):
-        if hostname=="team1":
-            return True
+         
+        response_list = ping(hostname)
+    
+        if response_list is not None:
+            return "Live"
         else:
-            return False
+            return "Dead"
+            
         
     @classmethod    
     def executeRemoteCommand(self,hostname,cmd):
