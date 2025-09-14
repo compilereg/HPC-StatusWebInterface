@@ -3,20 +3,18 @@ from mvc.models import responseModel as rm
 import json
 
 
+
 class APIController:
     
     @classmethod
     def getHostState(self,hostname):
         resp = rm.ResponseModel()
-    
-        HostName = f"{hostname}"
-        HostState = ho.HostOperations.getHostState(HostName)
-        if HostState == True:
+
+        HostState = ho.HostOperations.getHostState(hostname)
+        if HostState == "Live":
             ResCode = 200
-            HostState="Live"
         else:
             ResCode = 408
-            HostState="Dead"
         
         return  resp.buildResponse(HostState,ResCode),ResCode
     
