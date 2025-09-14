@@ -1,5 +1,6 @@
 from mvc.operations import hostOperations as ho
 from mvc.models import responseModel as rm
+from mvc.models import hostMemoryModel as hm
 import json
 
 
@@ -25,24 +26,9 @@ class APIController:
         
         ResCode=json.loads(cmdResponse)['code']
         if ResCode == 200:
-            RespData=json.loads(cmdResponse)['data']
-            RespDataLines = RespData.split('\n')
-            MemLine = RespDataLines[0].split(',')
-            SwapLine = RespDataLines[1].split(',')
-            RespDataDict = {
-                "code": 200,
-                "Memory": {
-                    "Total": f"{MemLine[1]}",
-                    "Used": f"{MemLine[2]}",
-                    "Free": f"{MemLine[6]}"
-                },
-                "Swap": {
-                    "Total": f"{SwapLine[1]}",
-                    "Used": f"{SwapLine[2]}",
-                    "Free": f"{SwapLine[3]}"
-                }
-            }
-            cmdResponse=json.dumps(RespDataDict)
+            HostMemory=hm.HostMemoryModel()
+            cmdResponse = HostMemory.GetHostMemory(json.loads(cmdResponse)['data'])
+            
             
         return  cmdResponse,ResCode
 
