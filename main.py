@@ -2,7 +2,7 @@ from mvc.controllers import settingsController as sc
 from flask import Flask, request , session
 from mvc.controllers import APIController as ac
 import json
-
+############### The main file to start the flask server
 app = Flask(__name__)
 app.secret_key = 'D0ntEverL0gHereCauseAmHere'
 
