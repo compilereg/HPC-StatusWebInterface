@@ -1,15 +1,19 @@
 from mvc.controllers import settingsController as sc
-from flask import Flask, request , session
+from flask import Flask, request , session,  render_template
 from mvc.controllers import APIController as ac
 import json
 ############### The main file to start the flask server
-app = Flask(__name__)
+app = Flask(__name__ , static_url_path='') 
 app.secret_key = 'D0ntEverL0gHereCauseAmHere'
 
 
 @app.route('/')
-def hello_world():
-   return 'Hello API!.'
+def emptyRoot():
+   return "Hello AAST Client"
+
+@app.route('/static')
+def defaultRoute():
+   return render_template('index.html')
 
 app.add_url_rule('/api/get/hoststate/<hostname>', view_func=ac.APIController.getHostState)
 app.add_url_rule('/api/get/hostmem/<hostname>', view_func=ac.APIController.getHostMemory)
