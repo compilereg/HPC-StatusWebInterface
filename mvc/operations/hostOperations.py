@@ -34,6 +34,10 @@ class HostOperations:
             output = stdout.read().decode('utf-8')
             error = stderr.read().decode('utf-8')
         
+        
+            ### Assume there is no any output, this means the command executed and return nothing with error code 404.
+            ResString="No data returned"
+            ResCode=404
             if output:
                 ResCode=200
                 ResString=output
