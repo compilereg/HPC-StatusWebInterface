@@ -79,7 +79,7 @@ class APIController:
         cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,f"sinfo -s -p {partitionname} -o '%a,%D,%A,%l,%G,%X,%Y,%m' | sed '1d'")        
         
         ResCode=json.loads(cmdResponse)['code']
-        print(json.loads(cmdResponse)['data'])
+       
         if ResCode == 404:
              cmdResponse = resp.buildResponse("Partition not found, or invalid partition name",ResCode)
         if ResCode == 200:  
