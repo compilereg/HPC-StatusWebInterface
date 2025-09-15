@@ -16,6 +16,7 @@ app.add_url_rule('/api/get/hostmem/<hostname>', view_func=ac.APIController.getHo
 app.add_url_rule('/api/get/hostavgload/<hostname>', view_func=ac.APIController.getHostLoadAverage)
 app.add_url_rule('/api/get/hostprocesscount/<hostname>', view_func=ac.APIController.getHostProcesCount)
 app.add_url_rule('/api/get/clusterpartitions/<hostname>', view_func=ac.APIController.getClusterParitions)
+app.add_url_rule('/api/get/clusterpartition/<hostname>/<partitionname>', view_func=ac.APIController.getClusterParitionInfo)
 
 
 if __name__ == '__main__':
