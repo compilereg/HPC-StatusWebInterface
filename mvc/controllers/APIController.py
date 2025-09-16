@@ -22,6 +22,14 @@ class APIController:
         
         return  resp.buildResponse(HostState,ResCode),ResCode
     
+    @classmethod
+    def getHostName(self,hostname):
+        resp = rm.ResponseModel()
+
+        cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"hostname")
+        ResCode = ResCode=json.loads(cmdResponse)['code']
+        return  cmdResponse,ResCode
+    
     
     @classmethod
     def getHostMemory(self,hostname):
