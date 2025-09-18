@@ -33,7 +33,7 @@ class APIController:
     
     @classmethod
     def getHostMemory(self,hostname):
-        cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"free -h|tr -s ' '| sed -e 's/ /,/g' -e '1d'")        
+        cmdResponse=ho.HostOperations.executeRemoteCommand(hostname,"free -b|tr -s ' '| sed -e 's/ /,/g' -e '1d'")        
         
         ResCode=json.loads(cmdResponse)['code']
         if ResCode == 200:
